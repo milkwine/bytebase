@@ -142,8 +142,8 @@ type ProjectPatch struct {
 var (
 	// DBNameToken is the token for database name.
 	DBNameToken = "{{DB_NAME}}"
-	// EnvironemntToken is the token for environment.
-	EnvironemntToken = "{{ENV_NAME}}"
+	// environmentToken is the token for environment.
+	environmentToken = "{{ENV_NAME}}"
 	// LocationToken is the token for location.
 	LocationToken = "{{LOCATION}}"
 	// TenantToken is the token for tenant.
@@ -154,12 +154,12 @@ var (
 		"{{VERSION}}":     true,
 		DBNameToken:       true,
 		"{{TYPE}}":        true,
-		EnvironemntToken:  false,
+		environmentToken:  false,
 		"{{DESCRIPTION}}": false,
 	}
 	schemaPathTemplateTokens = map[string]bool{
 		DBNameToken:      true,
-		EnvironemntToken: false,
+		environmentToken: false,
 	}
 	allowedProjectDBNameTemplateTokens = map[string]bool{
 		DBNameToken:   true,
@@ -176,8 +176,8 @@ func ValidateRepositoryFilePathTemplate(filePathTemplate string, tenantMode Proj
 		tokenMap[token] = true
 	}
 	if tenantMode == TenantModeTenant {
-		if _, ok := tokenMap[EnvironemntToken]; ok {
-			return &common.Error{Code: common.Invalid, Err: fmt.Errorf("%q is not allowed in the template for projects in tenant mode", EnvironemntToken)}
+		if _, ok := tokenMap[environmentToken]; ok {
+			return &common.Error{Code: common.Invalid, Err: fmt.Errorf("%q is not allowed in the template for projects in tenant mode", environmentToken)}
 		}
 	}
 
@@ -207,8 +207,8 @@ func ValidateRepositorySchemaPathTemplate(schemaPathTemplate string, tenantMode 
 		tokenMap[token] = true
 	}
 	if tenantMode == TenantModeTenant {
-		if _, ok := tokenMap[EnvironemntToken]; ok {
-			return &common.Error{Code: common.Invalid, Err: fmt.Errorf("%q is not allowed in the template for projects in tenant mode", EnvironemntToken)}
+		if _, ok := tokenMap[environmentToken]; ok {
+			return &common.Error{Code: common.Invalid, Err: fmt.Errorf("%q is not allowed in the template for projects in tenant mode", environmentToken)}
 		}
 	}
 
