@@ -27,6 +27,8 @@ const (
 	PrincipalAuthProviderGitlabSelfHost PrincipalAuthProvider = "GITLAB_SELF_HOST"
 	// PrincipalAuthProviderGitHubCom is the GitHub.com authentication provider.
 	PrincipalAuthProviderGitHubCom PrincipalAuthProvider = "GITHUB_COM"
+	// PrincipalAuthProviderGiteeCom is the Gitee.com authentication provider.
+	PrincipalAuthProviderGiteeCom PrincipalAuthProvider = "GITEE_COM"
 )
 
 // Principal is the API message for principals.

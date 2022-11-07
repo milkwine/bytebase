@@ -26,6 +26,8 @@ const (
 	SheetFromGitLabSelfHost SheetSource = "GITLAB_SELF_HOST"
 	// SheetFromGitHubCom is the sheet synced from github.com.
 	SheetFromGitHubCom SheetSource = "GITHUB_COM"
+	// SheetFromGiteeCom is the sheet synced from gitee.com.
+	SheetFromGiteeCom SheetSource = "GITEE_COM"
 )
 
 // SheetType is the type of sheet.

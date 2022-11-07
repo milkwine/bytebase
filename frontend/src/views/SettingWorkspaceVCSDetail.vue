@@ -21,6 +21,13 @@
         <div class="textlabel whitespace-nowrap">GitHub.com</div>
         <img class="h-6 w-auto" src="../assets/github-logo.svg" />
       </div>
+      <div
+        v-if="vcs.type == 'GITEE_COM'"
+        class="flex flex-row items-center space-x-2"
+      >
+        <div class="textlabel whitespace-nowrap">Gitee.com</div>
+        <img class="h-6 w-auto" src="../assets/gitee-logo.svg" />
+      </div>
     </div>
 
     <div>

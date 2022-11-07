@@ -104,6 +104,7 @@ export default defineComponent({
       if (isEmpty(payload.error)) {
         if (
           state.config.type == "GITLAB_SELF_HOST" ||
+          state.config.type == "GITEE_COM" ||
           state.config.type == "GITHUB_COM"
         ) {
           useOAuthStore()
@@ -152,6 +153,10 @@ export default defineComponent({
       } else if (state.config.type == "GITHUB_COM") {
         return t(
           "version-control.setting.add-git-provider.github-com-admin-requirement"
+        );
+      } else if (state.config.type == "GITEE_COM") {
+        return t(
+          "version-control.setting.add-git-provider.gitee-com-admin-requirement"
         );
       }
       return "";

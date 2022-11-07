@@ -10,6 +10,7 @@ import (
 	"github.com/bytebase/bytebase/api"
 	"github.com/bytebase/bytebase/common"
 	vcsPlugin "github.com/bytebase/bytebase/plugin/vcs"
+	_ "github.com/bytebase/bytebase/plugin/vcs/gitee"  // Import gitee plugin
 	_ "github.com/bytebase/bytebase/plugin/vcs/github" // Import to call the init until it is imported from somewhere else
 )
 
@@ -55,7 +56,7 @@ func (s *Server) registerOAuthRoutes(g *echo.Group) {
 			}
 		} else {
 			vcsType = req.Type
-			if vcsType != vcsPlugin.GitLabSelfHost && vcsType != vcsPlugin.GitHubCom {
+			if vcsType != vcsPlugin.GitLabSelfHost && vcsType != vcsPlugin.GitHubCom && vcsType != vcsPlugin.GiteeCom {
 				return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Unexpected VCS type: %s", vcsType))
 			}
 

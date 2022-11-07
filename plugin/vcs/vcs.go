@@ -22,6 +22,8 @@ const (
 	GitLabSelfHost Type = "GITLAB_SELF_HOST"
 	// GitHubCom is the VCS type for GitHub.com.
 	GitHubCom Type = "GITHUB_COM"
+	// GiteeCom is the VCS type for Gitee.com.
+	GiteeCom Type = "GITEE_COM"
 
 	// SQLReviewAPISecretName is the api secret name used in GitHub action or GitLab CI workflow.
 	SQLReviewAPISecretName = "SQL_REVIEW_API_SECRET"
@@ -291,6 +293,33 @@ type Provider interface {
 	PatchWebhook(ctx context.Context, oauthCtx common.OauthContext, instanceURL, repositoryID, webhookID string, payload []byte) error
 	// Deletes a webhook.
 	DeleteWebhook(ctx context.Context, oauthCtx common.OauthContext, instanceURL, repositoryID, webhookID string) error
+
+	/* TODO Patchd vcs interface for some reasons:
+
+	1. Do webhook stuff in a unique way:
+	  a. Create webhook
+	  b. Register vcs webhook router
+	  c. Parse and validate pushevent
+
+	2. `Gitee` api not support `repositoryID`, but `owner` and `repo`. (https://gitee.com/api/v5/swagger#/postV5ReposOwnerRepoHooks)
+	So maybe give type `vcs.Repository` to plugin and let it choose which to use.
+
+	---
+	Later, I saw `repositoryID` was chosen by frontend post logic in Github plugin.
+	I think it's not a good idea.
+	Or turn `Repository.ID` type `int64` to `string`, let plugin to choose which value is ID.
+
+	3. Sheet syncing is a little bit complicated. `Get File's Last Commit ID -> Get Commit Info` is fine for `Gitlab`. `Github` and `Gitee` can't directly get its `LastCommitID` from read file's meta (I think `LastCommitID` for `Github` is not working now). File have been read onece before this procedure.
+
+	Maybe come up a new interface to read `vcs.SheetInfo`.
+	```
+	ReadSheetInfo(ctx context.Context, oauthCtx common.OauthContext, instanceURL, repositoryID, filePath, ref string) (*SheetInfo, error)
+	```
+
+	*/
+	ValidateWebHook(secretToken string, httpHeader http.Header, body []byte) (bool, error)
+	ParseWebHook(httpHeader http.Header, body []byte) (bool, PushEvent, error)
+	CreateWebhookPatch(ctx context.Context, oauthCtx common.OauthContext, instanceURL string, repo Repository, webHookURL, secretToken string, secureSSL bool) (string, error)
 }
 
 var (

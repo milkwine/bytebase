@@ -1136,6 +1136,7 @@
         "gitlab-self-host": "自托管 GitLab",
         "gitlab-self-host-admin-requirement": "您必须是 GitLab 实例的管理员才能进行该配置。否则您需要让您的 GitLab 实例管理员把 Bytebase 先注册为 GitLab 整个实例级别的 OAuth 应用，之后再让对方提供给您注册完成后的应用 ID 以及 Secret，以让您在「OAuth 应用信息」步骤进行填写。",
         "github-com-admin-requirement": "您必须是 GitHub 组织的管理员才能进行该配置。否则您需要让您的 GitHub 组织管理员把 Bytebase 先注册为组织级别的 OAuth 应用，之后再让对方提供给您注册完成后的应用 ID 以及 Secret，以让您在「OAuth 应用信息」步骤进行填写。",
+        "gitee-com-admin-requirement": "您必须是 Gitee 组织的管理员才能进行该配置。否则您需要让您的 Gitee 组织管理员把 Bytebase 先注册为组织级别的 OAuth 应用，之后再让对方提供给您注册完成后的应用 ID 以及 Secret，以让您在「OAuth 应用信息」步骤进行填写。",
         "oauth-info-correct": "OAuth 信息验证成功",
         "check-oauth-info-match": "请确认 Secret 和注册在 GitLab 实例上的应用信息匹配。",
         "add-success": "成功添加了 Git 提供方「{vcs}」",
@@ -1146,6 +1147,7 @@
           "gitlab-instance-url": "GitLab 实例 URL",
           "gitlab-instance-url-label": "VCS 实例 URL。请确认这个实例和 Bytebase 之间网络是互通的。",
           "github-instance-url": "GitHub 实例 URL",
+          "gitee-instance-url": "Gitee 实例 URL",
           "instance-url-error": "实例 URL 必须以 https:// or http:// 开头",
           "display-name": "展示名称",
           "display-name-label": "一个可选的展示名称用以区分不同的 Git 供应方。"
@@ -1167,7 +1169,9 @@
           "gitlab-application-id-error": "应用 ID 必须是 64 个字母长度",
           "gitlab-secret-error": "Secret 必须是 64 个字母长度",
           "github-application-id-error": "应用 ID 必须是 20 个字母长度",
-          "github-secret-error": "Secret 必须是 40 个字母长度"
+          "github-secret-error": "Secret 必须是 40 个字母长度",
+          "gitee-application-id-error": "应用 ID 必须是 64 个字母长度",
+          "gitee-secret-error": "Secret 必须是 64 个字母长度"
         },
         "confirm": {
           "confirm-info": "确认信息",

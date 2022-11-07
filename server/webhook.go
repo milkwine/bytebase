@@ -40,7 +40,63 @@ const (
 	issueNameTemplate = "[%s] %s"
 )
 
+func (s *Server) registerVcsPluginWebHook(g *echo.Group, tp vcs.Type) {
+	path := fmt.Sprintf("/%s/:id", tp.RouterPrefix())
+	provider := vcs.Get(tp, vcs.ProviderConfig{})
+
+	g.POST(path, func(c echo.Context) error {
+		ctx := c.Request().Context()
+
+		body, err := io.ReadAll(c.Request().Body)
+		if err != nil {
+			return echo.NewHTTPError(http.StatusBadRequest, "Failed to read webhook request").SetInternal(err)
+		}
+
+		isPushEvent, event, err := provider.ParseWebHook(c.Request().Header, body)
+		if err != nil {
+			return echo.NewHTTPError(http.StatusBadRequest, "Malformed push event").SetInternal(err)
+		}
+
+		if !isPushEvent {
+			log.Debug("Ignore this none-push event.")
+			return c.String(http.StatusOK, "Want push event")
+		}
+
+		// repositoryID := fmt.Sprintf("%v", pushEvent.Project.ID)
+
+		filter := func(repo *api.Repository) (bool, error) {
+			isValid, err := provider.ValidateWebHook(repo.WebhookSecretToken, c.Request().Header, body)
+			if err != nil {
+				return false, err
+			}
+			if !isValid {
+				return false, nil
+			}
+			return s.isWebhookEventBranch(event.Ref, repo.BranchFilter)
+		}
+
+		repositoryList, err := s.filterRepository(ctx, c.Param("id"), event.RepositoryID, filter)
+		if err != nil {
+			return err
+		}
+		if len(repositoryList) == 0 {
+			log.Debug("Empty handle repo list. Ignore this push event.")
+			return c.String(http.StatusOK, "OK")
+		}
+
+		createdMessages, err := s.processPushEvent(ctx, repositoryList, event)
+		if err != nil {
+			return err
+		}
+		return c.String(http.StatusOK, strings.Join(createdMessages, "\n"))
+	})
+}
+
 func (s *Server) registerWebhookRoutes(g *echo.Group) {
+	for _, tp := range []vcs.Type{vcs.GiteeCom} {
+		s.registerVcsPluginWebHook(g, tp)
+	}
+
 	g.POST("/gitlab/:id", func(c echo.Context) error {
 		ctx := c.Request().Context()
 
@@ -259,12 +315,15 @@ func (s *Server) registerWebhookRoutes(g *echo.Group) {
 
 		wg.Wait()
 
-		response := &api.VCSSQLReviewResult{}
+		// TODO maybe caused by my local env(SA4006: this value of `response` is never used (staticcheck))
+		response := &api.VCSSQLReviewResult{} //nolint:staticcheck
 		switch repo.VCS.Type {
 		case vcs.GitHubCom:
 			response = convertSQLAdiceToGitHubActionResult(sqlCheckAdvice)
 		case vcs.GitLabSelfHost:
 			response = convertSQLAdviceToGitLabCIResult(sqlCheckAdvice)
+		default:
+			response = convertSQLAdiceToGitHubActionResult(sqlCheckAdvice)
 		}
 
 		log.Debug("SQL review finished",

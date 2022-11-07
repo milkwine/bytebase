@@ -78,6 +78,8 @@ export function isValidVCSApplicationIdOrSecret(
     return /^[a-zA-Z0-9_]{64}$/.test(str);
   } else if (vcsType == "GITHUB_COM") {
     return /^[a-zA-Z0-9_]{20}$|^[a-zA-Z0-9_]{40}$/.test(str);
+  } else if (vcsType == "GITEE_COM") {
+    return /^[a-zA-Z0-9_]{64}$/.test(str);
   }
   return false;
 }

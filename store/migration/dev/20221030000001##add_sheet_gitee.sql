@@ -1,0 +1,2 @@
+ALTER TABLE sheet DROP CONSTRAINT sheet_source_check;
+ALTER TABLE sheet ADD CONSTRAINT sheet_source_check CHECK (source IN ('BYTEBASE', 'GITLAB_SELF_HOST', 'GITHUB_COM', 'GITEE_COM'));

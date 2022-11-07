@@ -73,7 +73,7 @@ func (s *Server) registerAuthRoutes(g *echo.Group) {
 					return echo.NewHTTPError(http.StatusUnauthorized, "Incorrect password").SetInternal(err)
 				}
 			}
-		case api.PrincipalAuthProviderGitlabSelfHost, api.PrincipalAuthProviderGitHubCom:
+		case api.PrincipalAuthProviderGitlabSelfHost, api.PrincipalAuthProviderGitHubCom, api.PrincipalAuthProviderGiteeCom:
 			{
 				login := &api.VCSLogin{}
 				if err := jsonapi.UnmarshalPayload(c.Request().Body, login); err != nil {

@@ -55,6 +55,17 @@ export function openWindowForOAuth(
       "location=yes,left=200,top=200,height=640,width=480,scrollbars=yes,status=yes"
     );
   }
+  if (vcsType == "GITEE_COM") {
+    // GITEE OAuth scopes: https://gitee.com/api/v5/oauth_doc#/list-item-3
+    // Not sure the exactly minimum permission at this time, change it later.
+    return window.open(
+      `${endpoint}?client_id=${applicationId}&redirect_uri=${encodeURIComponent(
+        redirectUrl()
+      )}&state=${stateQueryParameter}&response_type=code&"scope=user_info projects pull_requests issues notes hook groups enterprises emails"`,
+      "oauth",
+      "location=yes,left=200,top=200,height=640,width=480,scrollbars=yes,status=yes"
+    );
+  }
   // GITLAB_SELF_HOST
   // GitLab OAuth App scopes: https://docs.gitlab.com/ee/integration/oauth_provider.html#authorized-applications
   return window.open(

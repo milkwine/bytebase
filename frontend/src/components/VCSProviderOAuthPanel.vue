@@ -184,6 +184,83 @@
           }}
         </li>
       </template>
+      <template v-if="config.type == 'GITEE_COM'">
+        <li>
+          1.
+          {{
+            $t(
+              "version-control.setting.add-git-provider.oauth-info.github-login-as-admin"
+            )
+          }}
+          <img class="w-auto" src="../assets/github_admin_settings.png" />
+        </li>
+        <li>
+          2.
+          {{
+            $t(
+              "version-control.setting.add-git-provider.oauth-info.github-visit-admin-page"
+            )
+          }}
+        </li>
+        <li>
+          3.
+          {{
+            $t(
+              "version-control.setting.add-git-provider.oauth-info.create-oauth-app"
+            )
+          }}
+          <div class="m-4 flex justify-center">
+            <dl
+              class="divide-y divide-block-border border border-block-border shadow rounded-lg"
+            >
+              <div class="grid grid-cols-2 gap-4 px-4 py-2">
+                <dt class="text-sm font-medium text-control-light text-right">
+                  Application name
+                </dt>
+                <dd class="text-sm text-main">Bytebase</dd>
+              </div>
+              <div class="grid grid-cols-2 gap-4 px-4 py-2 items-center">
+                <dt class="text-sm font-medium text-control-light text-right">
+                  Homepage URL
+                </dt>
+                <dd class="text-sm text-main items-center flex">
+                  https://bytebase.com
+                  <button
+                    tabindex="-1"
+                    class="ml-1 text-sm font-medium text-control-light hover:bg-gray-100"
+                    @click.prevent="copyHomepageURL"
+                  >
+                    <heroicons-outline:clipboard class="w-6 h-6" />
+                  </button>
+                </dd>
+              </div>
+              <div class="grid grid-cols-2 gap-4 px-4 py-2 items-center">
+                <dt class="text-sm font-medium text-control-light text-right">
+                  Authorization callback URL
+                </dt>
+                <dd class="text-sm text-main items-center flex">
+                  {{ redirectUrl() }}
+                  <button
+                    tabindex="-1"
+                    class="ml-1 text-sm font-medium text-control-light hover:bg-gray-100"
+                    @click.prevent="copyRedirectURI"
+                  >
+                    <heroicons-outline:clipboard class="w-6 h-6" />
+                  </button>
+                </dd>
+              </div>
+            </dl>
+          </div>
+        </li>
+        <li>
+          4.
+          {{
+            $t(
+              "version-control.setting.add-git-provider.oauth-info.github-paste-oauth-info"
+            )
+          }}
+        </li>
+      </template>
     </ol>
     <div>
       <div class="textlabel">
@@ -279,6 +356,8 @@ export default defineComponent({
         return `${props.config.instanceUrl}/admin/applications/new`;
       } else if (props.config.type == "GITHUB_COM") {
         return `https://github.com/settings/applications/new`;
+      } else if (props.config.type == "GITEE_COM") {
+        return `https://gitee.com/oauth/applications/new`;
       }
       return "";
     });
@@ -390,6 +469,10 @@ export default defineComponent({
         return t(
           "version-control.setting.add-git-provider.oauth-info.github-application-id-error"
         );
+      } else if (props.config.type == "GITEE_COM") {
+        return t(
+          "version-control.setting.add-git-provider.oauth-info.gitee-application-id-error"
+        );
       }
       return "";
     });
@@ -402,6 +485,10 @@ export default defineComponent({
       } else if (props.config.type == "GITHUB_COM") {
         return t(
           "version-control.setting.add-git-provider.oauth-info.github-secret-error"
+        );
+      } else if (props.config.type == "GITEE_COM") {
+        return t(
+          "version-control.setting.add-git-provider.oauth-info.gitee-secret-error"
         );
       }
       return "";

@@ -42,6 +42,13 @@
             <img class="h-6 w-auto" src="../assets/github-logo.svg" />
             <div class="whitespace-nowrap">GitHub.com</div>
           </div>
+          <div
+            v-if="config.type == 'GITEE_COM'"
+            class="flex flex-row items-center space-x-2"
+          >
+            <img class="h-6 w-auto" src="../assets/gitee-logo.svg" />
+            <div class="whitespace-nowrap">Gitee.com</div>
+          </div>
         </dd>
       </div>
       <div class="grid grid-cols-4 gap-4 px-4 py-2">

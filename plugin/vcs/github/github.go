@@ -716,7 +716,7 @@ func (p *Provider) ReadFileMeta(ctx context.Context, oauthCtx common.OauthContex
 		Name:         file.Name,
 		Path:         file.Path,
 		Size:         file.Size,
-		LastCommitID: file.SHA,
+		LastCommitID: file.SHA, // TODO I think it's not working, file.SHA is not commitID
 	}, nil
 }
 

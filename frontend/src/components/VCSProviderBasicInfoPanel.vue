@@ -35,6 +35,19 @@
       <img class="h-6 w-auto" src="../assets/github-logo.svg" />
       <label class="whitespace-nowrap">GitHub.com</label>
     </div>
+    <div class="radio space-x-2">
+      <input
+        v-model="config.type"
+        name="Gitee.com"
+        tabindex="-1"
+        type="radio"
+        class="btn"
+        value="GITEE_COM"
+        @change="changeType()"
+      />
+      <img class="h-6 w-auto" src="../assets/gitee-logo.svg" />
+      <label class="whitespace-nowrap">Gitee.com</label>
+    </div>
   </div>
   <div class="mt-4 relative">
     <div class="relative flex justify-start">
@@ -143,6 +156,8 @@ export default defineComponent({
         return t("version-control.setting.add-git-provider.gitlab-self-host");
       } else if (props.config.type == "GITHUB_COM") {
         return "GitHub.com";
+      } else if (props.config.type == "GITEE_COM") {
+        return "Gitee.com";
       }
       return "";
     });
@@ -156,6 +171,10 @@ export default defineComponent({
         return t(
           "version-control.setting.add-git-provider.basic-info.github-instance-url"
         );
+      } else if (props.config.type == "GITEE_COM") {
+        return t(
+          "version-control.setting.add-git-provider.basic-info.gitee-instance-url"
+        );
       }
       return "";
     });
@@ -165,13 +184,17 @@ export default defineComponent({
         return "https://gitlab.example.com";
       } else if (props.config.type == "GITHUB_COM") {
         return "https://github.com";
+      } else if (props.config.type == "GITEE_COM") {
+        return "https://gitee.com";
       }
       return "";
     });
 
     // github.com instance url is always https://github.com
     const instanceUrlDisabled = computed((): boolean => {
-      return props.config.type == "GITHUB_COM";
+      return (
+        props.config.type == "GITHUB_COM" || props.config.type == "GITEE_COM"
+      );
     });
 
     const changeUrl = (value: string) => {
@@ -214,6 +237,11 @@ export default defineComponent({
         props.config.instanceUrl = "https://github.com";
         // eslint-disable-next-line vue/no-mutating-props
         props.config.name = "GitHub.com";
+      } else if (props.config.type == "GITEE_COM") {
+        // eslint-disable-next-line vue/no-mutating-props
+        props.config.instanceUrl = "https://gitee.com";
+        // eslint-disable-next-line vue/no-mutating-props
+        props.config.name = "Gitee.com";
       }
     };
 

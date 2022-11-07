@@ -15,6 +15,9 @@
         <template v-if="vcs.type.startsWith('GITHUB')">
           <img class="h-6 w-auto" src="../assets/github-logo.svg" />
         </template>
+        <template v-if="vcs.type.startsWith('GITEE')">
+          <img class="h-6 w-auto" src="../assets/gitee-logo.svg" />
+        </template>
         <span>{{ vcs.name }}</span>
       </button>
     </template>

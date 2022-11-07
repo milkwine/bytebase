@@ -301,7 +301,14 @@ func (s *Server) registerProjectRoutes(g *echo.Group) {
 			}
 			repositoryCreate.WebhookSecretToken = secretToken
 
-			webhookID, err := s.createVCSWebhook(ctx, vcs.Type, repositoryCreate.WebhookEndpointID, secretToken, repositoryCreate.AccessToken, vcs.InstanceURL, repositoryCreate.ExternalID)
+			var webhookID string
+
+			// Temprorary patch here
+			if vcs.Type == vcsPlugin.GiteeCom {
+				webhookID, err = s.createVCSWebhookPatch(ctx, vcs.Type, vcs.InstanceURL, *repositoryCreate)
+			} else {
+				webhookID, err = s.createVCSWebhook(ctx, vcs.Type, repositoryCreate.WebhookEndpointID, secretToken, repositoryCreate.AccessToken, vcs.InstanceURL, repositoryCreate.ExternalID)
+			}
 			if err != nil {
 				return echo.NewHTTPError(http.StatusInternalServerError, fmt.Sprintf("Failed to create webhook for project ID: %v", repositoryCreate.ProjectID)).SetInternal(err)
 			}
